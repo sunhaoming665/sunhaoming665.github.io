@@ -1,1 +1,267 @@
-个人使用，只可用此域名访问：https://sunhaoming665.github.io
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .tool-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tool-desc {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .instructions h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .route-option {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .route-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .route-title::before {
+            content: "•";
+            margin-right: 10px;
+            color: #fdbb2d;
+            font-size: 1.5rem;
+        }
+        
+        .route-url {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        
+        .limit-link {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .limit-link:hover {
+            opacity: 1;
+        }
+        
+        .limit-link a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
+        }
+        
+        .limit-link a:hover {
+            color: white;
+            border-bottom: 1px dashed white;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>实用工具导航</h1>
+            <p class="subtitle">一站式访问各类实用在线工具，提高您的工作效率</p>
+        </header>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <span class="tool-icon">🚀</span>
+                <h3 class="tool-title">GitHub下载加速</h3>
+                <p class="tool-desc">提供GitHub资源的高速下载服务，解决国内访问GitHub速度慢的问题</p>
+                <a href="./github-faster" class="btn">立即使用</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="tool-icon">📧</span>
+                <h3 class="tool-title">临时邮箱</h3>
+                <p class="tool-desc">生成一次性邮箱地址，保护您的隐私，避免垃圾邮件骚扰</p>
+                <a href="./mail" class="btn">立即使用</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="tool-icon">🎲</span>
+                <h3 class="tool-title">随机数生成</h3>
+                <p class="tool-desc">生成指定范围内的随机数，支持多种随机化需求</p>
+                <a href="./rand" class="btn">立即使用</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="tool-icon">⏰</span>
+                <h3 class="tool-title">在线时钟</h3>
+                <p class="tool-desc">显示当前时间，支持多种时区和时间格式</p>
+                <a href="./time" class="btn">立即使用</a>
+            </div>
+        </div>
+        
+        <div class="limit-link">
+            <a href="./limit">查看服务访问限制公告</a>
+        </div>
+        
+        <div class="instructions">
+            <h2>线路切换指引</h2>
+            <p>如果当前线路访问缓慢，您可以尝试切换到以下备用线路：</p>
+            
+            <div class="route-option">
+                <div class="route-title">GitHub Pages 线路</div>
+                <p>适合国内大部分地区访问，稳定性较高</p>
+                <div class="route-url">sunhaoming665.github.io</div>
+            </div>
+            
+            <div class="route-option">
+                <div class="route-title">EdgeOne Pages 线路</div>
+                <p>全球加速，适合海外用户或需要更高速访问的情况</p>
+                <div class="route-url">github.sunhaoming.dpdns.org</div>
+            </div>
+            
+            <p style="margin-top: 20px; font-style: italic;">提示：如果当前页面加载缓慢，请尝试刷新页面或切换到另一条线路。</p>
+        </div>
+        
+        <footer>
+            <p>© 2023 工具导航页面 | 设计用于提供更好的用户体验</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s, transform 0.5s';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
