@@ -57,6 +57,7 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
@@ -94,6 +95,10 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         button:disabled {
@@ -157,6 +162,49 @@
             animation: slideDown 0.3s ease;
         }
 
+        .seed-explanation {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #64748b;
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .seed-details {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .seed-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .info-icon {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+
+        .info-icon:hover {
+            color: var(--primary);
+        }
+
+        .seed-explanation-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .seed-explanation-container.expanded {
+            max-height: 200px;
+        }
 
         @keyframes popIn {
             0% { transform: scale(0.8) translateY(10px); opacity: 0; }
@@ -192,7 +240,16 @@
         <div class="form-group">
             <label for="seed">🎲 随机种子</label>
             <input type="text" id="seed" placeholder="默认使用时间戳">
+            <div class="info-icon" id="infoIcon">?</div>
             <div class="validation-message" id="seedError"></div>
+            
+            <div class="seed-explanation-container" id="seedExplanationContainer">
+                <div class="seed-explanation">
+                    <p>随机种子用于初始化随机数生成器，相同的种子会产生相同的随机数序列。</p>
+                    <p>如果不提供种子，系统将使用当前时间戳作为种子。</p>
+                    <p>使用LCG混淆，1664525和1013904223。</p>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label for="min">最小值</label>
@@ -240,10 +297,18 @@
                 seed: document.getElementById('seedError'),
                 min: document.getElementById('minError'),
                 max: document.getElementById('maxError')
-            }
+            },
+            seedExplanationContainer: document.getElementById('seedExplanationContainer'),
+            infoIcon: document.getElementById('infoIcon')
         };
 
         let currentAnimation = null;
+        let usedSeed = null;
+
+        // 初始化随机种子解释框
+        elements.infoIcon.addEventListener('click', () => {
+            elements.seedExplanationContainer.classList.toggle('expanded');
+        });
 
         function showError(element, message) {
             element.classList.add('validation-visible');
@@ -301,7 +366,10 @@
                 const progress = Date.now() - startTime;
                 const ratio = Math.min(progress / duration, 1);
                 current = Math.floor(easeOutQuad(ratio) * finalValue);
-                elements.result.textContent = `随机数：${current}`;
+                elements.result.innerHTML = `
+                    <div>随机数：${current}</div>
+                    <div class="seed-details">随机种子：<span class="seed-value">${usedSeed}</span></div>
+                `;
                 
                 if (ratio < 1) {
                     requestAnimationFrame(update);
@@ -334,7 +402,10 @@
                 // 模拟异步操作
                 await new Promise(resolve => setTimeout(resolve, 300));
 
-                const lcg = new LCG(elements.seed.value || Date.now());
+                // 确定使用的种子
+                usedSeed = elements.seed.value.trim() || Date.now();
+                
+                const lcg = new LCG(usedSeed);
                 const randomNumber = Math.floor(lcg.next() * 
                     (Number(elements.max.value) - Number(elements.min.value) + 1)) + 
                     Number(elements.min.value);
