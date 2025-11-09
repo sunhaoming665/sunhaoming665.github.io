@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>北京时间与倒计时</title>
+    <title>北京时间</title>
     <style>
         * {
             margin: 0;
@@ -266,7 +266,7 @@
                 </div>
                 <div class="time-input">
                     <label for="secondsInput">秒</label>
-                    <input type="number" id="secondsInput" min="0" max="59" value="10">
+                    <input type="number" id="secondsInput" min="0" max="59" value="0">
                 </div>
             </div>
             
@@ -320,9 +320,8 @@
                 durationInputs.style.display = 'none';
                 timePicker.style.display = 'flex';
                 
-                // 设置默认时间为当前时间+1小时
+                // 设置默认时间为当前时间
                 const now = new Date();
-                now.setHours(now.getHours() + 1);
                 targetTimeInput.value = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
             }
         }
@@ -456,7 +455,7 @@
                 
                 timeDisplay.textContent = '00:00:00';
                 timeDisplay.style.color = '#ff5555';
-                countdownMessage.textContent = '倒计时结束！30秒后自动返回时钟模式';
+                countdownMessage.textContent = '倒计时结束！即将自动返回时钟模式';
                 
                 // 设置30秒后自动返回时钟模式
                 returnToClockTimeout = setTimeout(() => {
@@ -478,14 +477,6 @@
                 minutes.toString().padStart(2, '0'),
                 seconds.toString().padStart(2, '0')
             ].join(':');
-            
-            // 动态改变颜色，最后10秒变红色
-            if (hours === 0 && minutes === 0 && seconds <= 10) {
-                timeDisplay.style.color = '#ff5555';
-            } else {
-                timeDisplay.style.color = '#00ff9d';
-            }
-        }
         
         // 事件监听
         clockModeBtn.addEventListener('click', () => switchMode('clock'));
