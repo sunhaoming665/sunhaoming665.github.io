@@ -206,6 +206,31 @@
             max-height: 200px;
         }
 
+        .mode-switch {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .mode-btn.active {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+        }
+
         @keyframes popIn {
             0% { transform: scale(0.8) translateY(10px); opacity: 0; }
             50% { transform: scale(1.1) translateY(0); }
@@ -237,7 +262,13 @@
 <body>
     <div class="container">
         <h2>随机数生成器</h2>
-        <div class="form-group">
+        
+        <div class="mode-switch">
+            <div class="mode-btn active" id="cryptoModeBtn">🔐 加密随机</div>
+            <div class="mode-btn" id="seedModeBtn">🎲 种子随机</div>
+        </div>
+        
+        <div class="form-group" id="seedGroup">
             <label for="seed">🎲 随机种子</label>
             <input type="text" id="seed" placeholder="默认使用时间戳">
             <div class="info-icon" id="infoIcon">?</div>
@@ -245,9 +276,7 @@
             
             <div class="seed-explanation-container" id="seedExplanationContainer">
                 <div class="seed-explanation">
-                    <p>随机种子用于初始化随机数生成器，相同的种子会产生相同的随机数序列。</p>
-                    <p>如果不提供种子，系统将使用当前时间戳作为种子。</p>
-                    <p>使用LCG混淆，推荐种子大于1×10⁹。</p>
+                    
                 </div>
             </div>
         </div>
@@ -287,6 +316,13 @@
             }
         }
 
+        // 使用 crypto.getRandomValues 生成随机数
+        function getCryptoRandom() {
+            const array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+            return array[0] / (0xFFFFFFFF + 1);
+        }
+
         const elements = {
             seed: document.getElementById('seed'),
             min: document.getElementById('min'),
@@ -299,16 +335,53 @@
                 max: document.getElementById('maxError')
             },
             seedExplanationContainer: document.getElementById('seedExplanationContainer'),
-            infoIcon: document.getElementById('infoIcon')
+            infoIcon: document.getElementById('infoIcon'),
+            seedGroup: document.getElementById('seedGroup'),
+            cryptoModeBtn: document.getElementById('cryptoModeBtn'),
+            seedModeBtn: document.getElementById('seedModeBtn')
         };
 
         let currentAnimation = null;
         let usedSeed = null;
+        let currentMode = 'crypto'; // 'crypto' 或 'seed'
 
-        // 初始化随机种子解释框
+        // 初始化事件监听
         elements.infoIcon.addEventListener('click', () => {
             elements.seedExplanationContainer.classList.toggle('expanded');
         });
+
+        // 模式切换
+        elements.cryptoModeBtn.addEventListener('click', () => {
+            setMode('crypto');
+        });
+
+        elements.seedModeBtn.addEventListener('click', () => {
+            setMode('seed');
+        });
+
+        function setMode(mode) {
+            currentMode = mode;
+            elements.cryptoModeBtn.classList.toggle('active', mode === 'crypto');
+            elements.seedModeBtn.classList.toggle('active', mode === 'seed');
+            elements.seedGroup.style.display = mode === 'seed' ? 'block' : 'none';
+            
+            // 更新说明文本
+            const explanation = elements.seedExplanationContainer.querySelector('.seed-explanation');
+            if (mode === 'crypto') {
+                explanation.innerHTML = `
+                    <p>使用浏览器的加密API生成真正的随机数，具有更高的安全性和随机性，但不可复现。</p>
+                `;
+            } else {
+                explanation.innerHTML = `
+                    <p>随机种子用于初始化随机数生成器，相同的种子会产生相同的随机数序列。</p>
+                    <p>如果不提供种子，系统将使用当前时间戳作为种子。</p>
+                    <p>使用LCG混淆，推荐种子大于1×10⁹，且随机范围较大时使用。</p>
+                `;
+            }
+        }
+
+        // 初始化模式
+        setMode('crypto');
 
         function showError(element, message) {
             element.classList.add('validation-visible');
@@ -347,8 +420,8 @@
                 isValid = false;
             }
 
-            // 验证随机种子
-            if (values.seed && !/^[\d\-]+$/.test(values.seed)) {
+            // 验证随机种子（仅在种子模式下）
+            if (currentMode === 'seed' && values.seed && !/^[\d\-]+$/.test(values.seed)) {
                 showError(elements.errors.seed, "只允许数字");
                 elements.seed.classList.add('input-error');
                 isValid = false;
@@ -366,9 +439,17 @@
                 const progress = Date.now() - startTime;
                 const ratio = Math.min(progress / duration, 1);
                 current = Math.floor(easeOutQuad(ratio) * finalValue);
+                
+                let details = '';
+                if (currentMode === 'seed') {
+                    details = `<div class="seed-details">随机种子：<span class="seed-value">${usedSeed}</span></div>`;
+                } else {
+                    details = `<div class="seed-details">随机模式：<span class="seed-value">加密随机 (crypto.getRandomValues)</span></div>`;
+                }
+                
                 elements.result.innerHTML = `
                     <div>随机数：${current}</div>
-                    <div class="seed-details">随机种子：<span class="seed-value">${usedSeed}</span></div>
+                    ${details}
                 `;
                 
                 if (ratio < 1) {
@@ -402,13 +483,23 @@
                 // 模拟异步操作
                 await new Promise(resolve => setTimeout(resolve, 300));
 
-                // 确定使用的种子
-                usedSeed = elements.seed.value.trim() || Date.now();
+                const min = Number(elements.min.value);
+                const max = Number(elements.max.value);
+                const range = max - min + 1;
+
+                let randomNumber;
                 
-                const lcg = new LCG(usedSeed);
-                const randomNumber = Math.floor(lcg.next() * 
-                    (Number(elements.max.value) - Number(elements.min.value) + 1)) + 
-                    Number(elements.min.value);
+                if (currentMode === 'crypto') {
+                    // 使用加密随机数
+                    usedSeed = '加密随机';
+                    const randomValue = getCryptoRandom();
+                    randomNumber = Math.floor(randomValue * range) + min;
+                } else {
+                    // 使用种子随机数
+                    usedSeed = elements.seed.value.trim() || Date.now();
+                    const lcg = new LCG(usedSeed);
+                    randomNumber = Math.floor(lcg.next() * range) + min;
+                }
 
                 elements.result.className = 'result-success';
                 animateNumber(randomNumber);
