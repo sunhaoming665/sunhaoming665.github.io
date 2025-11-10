@@ -336,6 +336,7 @@
                 countdownModeBtn.classList.remove('active');
                 countdownSetup.style.display = 'none';
                 countdownMessage.textContent = '';
+                timeDisplay.style.color = '#00ff9d';
                 
                 // 清除倒计时相关计时器
                 if (countdownInterval) {
@@ -357,6 +358,7 @@
                 countdownSetup.style.display = 'block';
                 timeDisplay.textContent = '00:00:00';
                 dateDisplay.textContent = '倒计时模式';
+                timeDisplay.style.color = '#00ff9d';
                 
                 // 确保正确的输入类型显示
                 toggleCountdownType();
