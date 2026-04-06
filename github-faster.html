@@ -267,9 +267,22 @@
     </div>
 
     <script>
-        // 加速站点数据
+        // 加速站点数据（含自建+新增社区站点）
         const proxies = [
-            { id: 'proxy1', name: '自建站点', url: 'github-faster.sunhaoming.dpdns.org', ping: 0 }
+            { id: 'proxy1', name: '自建站点', url: 'github-faster.sunhaoming.dpdns.org', ping: 0 },
+            { id: 'proxy2', name: '社区站点1', url: 'gh.llkk.cc', ping: 0 },
+            { id: 'proxy3', name: '社区站点2', url: 'ghproxy.cn', ping: 0 },
+            { id: 'proxy4', name: '社区站点3', url: 'ghproxy.net', ping: 0 },
+            { id: 'proxy5', name: '社区站点4', url: 'gitproxy.click', ping: 0 },
+            { id: 'proxy6', name: '社区站点5', url: 'github.tbedu.top', ping: 0 },
+            { id: 'proxy7', name: '社区站点6', url: 'github.moeyy.xyz', ping: 0 },
+            { id: 'proxy8', name: '社区站点7', url: 'gh.jasonzeng.dev', ping: 0 },
+            { id: 'proxy9', name: '社区站点8', url: 'gh.halonice.com', ping: 0 },
+            { id: 'proxy10', name: '社区韩国节点1', url: 'kr1-proxy.gitwarp.top:8081', ping: 0 },
+            { id: 'proxy11', name: '社区韩国节点2', url: 'kr2-proxy.gitwarp.top:9980', ping: 0 },
+            { id: 'proxy12', name: '社区日本节点1', url: 'jp1-proxy.gitwarp.top:8123', ping: 0 },
+            { id: 'proxy13', name: '社区日本节点2', url: 'jp-proxy.gitwarp.top:3000', ping: 0 },
+            { id: 'proxy14', name: '社区通用节点', url: 'proxy.gitwarp.top', ping: 0 }
         ];
         
         let selectedProxy = proxies[0]; // 默认选择第一个
