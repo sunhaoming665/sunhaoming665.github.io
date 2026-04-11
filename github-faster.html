@@ -274,11 +274,15 @@
             { id: 'proxy3', name: '社区站点2', url: 'ghproxy.net', ping: 0 },
             { id: 'proxy4', name: '社区站点3', url: 'github.tbedu.top', ping: 0 },
             { id: 'proxy5', name: '社区站点4', url: 'gh.halonice.com', ping: 0 },
-            { id: 'proxy6', name: '社区站点5', url: 'proxy.gitwarp.top', ping: 0}
+            { id: 'proxy6', name: '社区站点5', url: 'proxy.gitwarp.top', ping: 0},
+            { id: 'proxy7', name: '社区站点6', url: 'githubproxy.cc', ping: 0 },
+            { id: 'proxy8', name: '社区站点7', url: 'ghproxylist.com', ping: 0 },
+            { id: 'proxy9', name: '社区站点8', url: 'ghfast.top', ping: 0 },
+            { id: 'proxy10', name: '社区站点9', url: 'gh-proxy.com', ping: 0 }
         ];
         
         let selectedProxy = proxies[0]; // 默认选择第一个
-        let totalTests = 5; // 每个节点测试次数
+        let totalTests = 3; // 每个节点测试次数
         let currentTest = 0; // 当前测试次数
         let testInterval; // 测试间隔计时器
 
@@ -366,7 +370,7 @@
                         calculateAveragePing(proxy);
                     });
                 }
-            }, 2000); // 每2000ms测试一次
+            }, 3333); // 每3333ms测试一次
         }
 
         // 测量单个代理的ping值
@@ -395,9 +399,9 @@
                 
                 // 根据ping值设置颜色
                 pingElement.className = 'ping-value ';
-                if (pingTime < 200) {
+                if (pingTime < 500) {
                     pingElement.classList.add('ping-good');
-                } else if (pingTime < 500) {
+                } else if (pingTime < 1000) {
                     pingElement.classList.add('ping-medium');
                 } else {
                     pingElement.classList.add('ping-bad');
