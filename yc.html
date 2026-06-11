@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机惩罚抽取器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border-radius: 2px;
+        }
+        
+        .input-section {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        input, textarea {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .punishments-section {
+            margin-bottom: 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        
+        .punishments-section.expanded {
+            max-height: 400px;
+        }
+        
+        .punishments-list {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .punishment-item {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background-color: white;
+            border-radius: 6px;
+            border-left: 4px solid #6a11cb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .punishment-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .remove-btn {
+            background: #e74c3c;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        
+        .buttons-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .pick-btn {
+            flex: 2;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            font-size: 18px;
+            padding: 15px;
+        }
+        
+        .clear-btn {
+            flex: 1;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+        }
+        
+        .toggle-list-btn {
+            width: 100%;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #8e2de2, #4a00e0);
+        }
+        
+        .result-section {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin-top: 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-label {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .result {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-height: 36px;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.7);
+            width: 90%;
+        }
+        
+        .empty-message {
+            color: #95a5a6;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .count-display {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(106, 17, 203, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .buttons-section {
+                flex-direction: column;
+            }
+        }
+        
+        /* 抽取动画效果 */
+        .flash {
+            animation: flash 0.3s;
+        }
+        
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        .rapid-flash {
+            animation: rapidFlash 0.1s infinite;
+        }
+        
+        @keyframes rapidFlash {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        
+        .winner {
+            animation: winner 1s ease-in-out;
+        }
+        
+        @keyframes winner {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.7;
+            animation: confettiFall 3s linear forwards;
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            animation: fadeInUp 0.3s ease-out;
+        }
+        
+        .notification.success {
+            background-color: #2ecc71;
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>随机惩罚抽取器</h1>
+        
+        <div class="welcome-message">
+            已加载预设惩罚内容，可直接抽取！也可添加自定义惩罚。
+        </div>
+        
+        <div class="input-section">
+            <label for="punishment-input">输入惩罚内容:</label>
+            <div class="input-group">
+                <input type="text" id="punishment-input" placeholder="例如: 唱一首歌">
+                <button id="add-btn">添加惩罚</button>
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <label for="batch-input">批量输入惩罚内容（每行一个）:</label>
+            <textarea id="batch-input" placeholder="例如:&#10;唱一首歌&#10;做10个俯卧撑&#10;讲一个笑话"></textarea>
+            <button id="batch-add-btn">批量添加</button>
+        </div>
+        
+        <button class="toggle-list-btn" id="toggle-list-btn">显示惩罚列表</button>
+        
+        <div class="punishments-section" id="punishments-section">
+            <label>当前惩罚列表:</label>
+            <div class="count-display" id="count-display">0 项</div>
+            <div class="punishments-list" id="punishments-list">
+                <div class="empty-message">暂无惩罚，请添加惩罚内容</div>
+            </div>
+        </div>
+        
+        <div class="buttons-section">
+            <button class="pick-btn" id="pick-btn">随机抽取惩罚</button>
+            <button class="clear-btn" id="clear-btn">清空自定义项</button>
+        </div>
+        
+        <div class="result-section" id="result-section">
+            <div class="result-label">抽取结果:</div>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const punishmentInput = document.getElementById('punishment-input');
+            const addBtn = document.getElementById('add-btn');
+            const batchInput = document.getElementById('batch-input');
+            const batchAddBtn = document.getElementById('batch-add-btn');
+            const punishmentsList = document.getElementById('punishments-list');
+            const punishmentsSection = document.getElementById('punishments-section');
+            const toggleListBtn = document.getElementById('toggle-list-btn');
+            const pickBtn = document.getElementById('pick-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const result = document.getElementById('result');
+            const resultSection = document.getElementById('result-section');
+            const countDisplay = document.getElementById('count-display');
+            
+            const defaultPunishments = [
+                "海底捞暖场王：为一位同学激情献唱《生日祝福歌》。",
+                "大名腚腚：背对大家，用屁股在空中写出某位同学的名字，要让别人能看出来。",
+                "偶像练习生：平板支撑并大声唱歌1分钟。",
+                "我是瓯壮壮：俯卧撑30个并一直大喊：'我是瓯中第一猛男'。",
+                "瓯中第一大气：一口气念完'八百标兵奔北坡，炮兵并排北边跑，炮兵怕把标兵碰，标兵怕碰炮兵炮。'不能出错。",
+                "金牌销售：把自己当成一件商品，现场口播1分钟的广告来推销自己，要充满激情。",
+                "王老师模仿大赛：模仿一位老师或同学的经典动作或说话方式，直到大家猜出来是谁。",
+                "演员的自我修养：演一段经典电影桥段，例如《泰坦尼克号》船头飞翔，但需要自己配台词和风声。",
+                "瓯中第一深情：选择墙上的一個点（比如一个插座），对它深情地说1分钟情话。",
+                "模仿老师视频中的舞蹈60s",
+	""
+            ];
+            
+            // 惩罚数组（初始化为预设惩罚）
+            let punishments = [...defaultPunishments];
+            let isListExpanded = false;
+            
+            // 初始化显示
+            updatePunishmentsDisplay();
+            
+            // 切换惩罚列表显示/隐藏
+            toggleListBtn.addEventListener('click', function() {
+                isListExpanded = !isListExpanded;
+                punishmentsSection.classList.toggle('expanded', isListExpanded);
+                toggleListBtn.textContent = isListExpanded ? '隐藏惩罚列表' : '显示惩罚列表';
+            });
+            
+            // 添加单个惩罚
+            function addPunishment() {
+                const punishmentText = punishmentInput.value.trim();
+                
+                if (punishmentText) {
+                    punishments.push(punishmentText);
+                    updatePunishmentsDisplay();
+                    punishmentInput.value = '';
+                    punishmentInput.focus();
+                    showNotification('惩罚已添加！');
+                } else {
+                    showNotification('请输入惩罚内容', true);
+                }
+            }
+            
+            // 批量添加惩罚
+            function addBatchPunishments() {
+                const batchText = batchInput.value.trim();
+                
+                if (batchText) {
+                    const newPunishments = batchText.split('\n')
+                        .map(p => p.trim())
+                        .filter(p => p.length > 0);
+                    
+                    if (newPunishments.length > 0) {
+                        punishments = [...punishments, ...newPunishments];
+                        updatePunishmentsDisplay();
+                        batchInput.value = '';
+                        showNotification(`成功添加 ${newPunishments.length} 个惩罚`);
+                    } else {
+                        showNotification('请输入有效的惩罚内容', true);
+                    }
+                } else {
+                    showNotification('请输入惩罚内容', true);
+                }
+            }
+            
+            // 更新惩罚列表显示
+            function updatePunishmentsDisplay() {
+                countDisplay.textContent = `${punishments.length} 项`;
+                
+                if (punishments.length === 0) {
+                    punishmentsList.innerHTML = '<div class="empty-message">暂无惩罚，请添加惩罚内容</div>';
+                    return;
+                }
+                
+                punishmentsList.innerHTML = '';
+                punishments.forEach((punishment, index) => {
+                    const punishmentItem = document.createElement('div');
+                    punishmentItem.className = 'punishment-item fade-in';
+                    
+                    // 标记预设惩罚（不可删除）
+                    const isDefault = index < defaultPunishments.length && 
+                                     punishment === defaultPunishments[index];
+                    
+                    punishmentItem.innerHTML = `
+                        <span>${index + 1}. ${punishment} ${isDefault ? '<small>(预设)</small>' : ''}</span>
+                        ${!isDefault ? `<button class="remove-btn" data-index="${index}">删除</button>` : ''}
+                    `;
+                    punishmentsList.appendChild(punishmentItem);
+                });
+                
+                // 添加删除事件监听（只对非预设惩罚有效）
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        punishments.splice(index, 1);
+                        updatePunishmentsDisplay();
+                        showNotification('惩罚已删除');
+                    });
+                });
+            }
+            
+            // 显示通知消息
+            function showNotification(message, isError = false) {
+                // 移除已有的通知
+                const existingNotification = document.querySelector('.notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+                
+                // 创建新通知
+                const notification = document.createElement('div');
+                notification.className = `notification ${isError ? 'error' : 'success'}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // 3秒后自动移除
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 3000);
+            }
+            
+            // 创建彩色纸屑效果
+            function createConfetti() {
+                const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#ff6600', '#ff00ff', '#00ffff'];
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    resultSection.appendChild(confetti);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.remove();
+                        }
+                    }, 3000);
+                }
+            }
+            
+            // 随机抽取惩罚
+            function pickPunishment() {
+                if (punishments.length === 0) {
+                    showNotification('惩罚列表为空，请先添加惩罚', true);
+                    return;
+                }
+                
+                // 禁用按钮防止重复点击
+                pickBtn.disabled = true;
+                clearBtn.disabled = true;
+                
+                // 清空结果区域
+                result.textContent = '';
+                resultSection.querySelectorAll('.confetti').forEach(c => {
+                    if (c.parentNode) c.remove();
+                });
+                
+                // 开始闪动效果
+                resultSection.classList.add('rapid-flash');
+                
+                // 模拟随机选择过程
+                let count = 0;
+                const maxCount = 30;
+                const interval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * punishments.length);
+                    result.textContent = punishments[randomIndex];
+                    result.classList.add('flash');
+                    
+                    setTimeout(() => {
+                        result.classList.remove('flash');
+                    }, 150);
+                    
+                    count++;
+                    if (count >= maxCount) {
+                        clearInterval(interval);
+                        
+                        // 停止闪动
+                        resultSection.classList.remove('rapid-flash');
+                        
+                        // 最终结果
+                        const finalIndex = Math.floor(Math.random() * punishments.length);
+                        result.textContent = punishments[finalIndex];
+                        result.classList.add('winner');
+                        
+                        // 添加庆祝效果
+                        createConfetti();
+                        
+                        // 重新启用按钮
+                        setTimeout(() => {
+                            pickBtn.disabled = false;
+                            clearBtn.disabled = false;
+                            result.classList.remove('winner');
+                        }, 2000);
+                    }
+                }, 100);
+            }
+            
+            // 清空惩罚列表（保留预设惩罚）
+            function clearPunishments() {
+                if (punishments.length <= defaultPunishments.length) {
+                    showNotification('惩罚列表已经是初始状态', true);
+                    return;
+                }
+                
+                if (confirm('确定要清空所有自定义惩罚吗？（预设惩罚将保留）')) {
+                    // 只保留预设惩罚
+                    punishments = [...defaultPunishments];
+                    updatePunishmentsDisplay();
+                    result.textContent = '';
+                    resultSection.querySelectorAll('.confetti').forEach(c => {
+                        if (c.parentNode) c.remove();
+                    });
+                    showNotification('已清空所有自定义惩罚');
+                }
+            }
+            
+            // 事件监听
+            addBtn.addEventListener('click', addPunishment);
+            punishmentInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addPunishment();
+                }
+            });
+            
+            batchAddBtn.addEventListener('click', addBatchPunishments);
+            pickBtn.addEventListener('click', pickPunishment);
+            clearBtn.addEventListener('click', clearPunishments);
+        });
+    </script>
+</body>
+</html>
