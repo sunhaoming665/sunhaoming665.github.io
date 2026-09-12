@@ -1,542 +1,365 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>云临时邮箱 | 96Mail</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #1a73e8;
-            --secondary: #3a86ff;
-            --accent: #0061e0;
-            --light: #f8f9fa;
-            --dark: #202124;
-            --gray: #5f6368;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        body {
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-            min-height: 100vh;
-            padding-bottom: 40px;
-        }
-        
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 1.5rem 5%;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-        
-        .logo-icon {
-            background-color: white;
-            color: var(--primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        nav a {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        
-        nav a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 5rem 5%;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(to bottom, white 0%, #f5f7fa 100%);
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            color: var(--dark);
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--gray);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            margin: 10px;
-            box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
-        }
-        
-        .cta-button:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(26, 115, 232, 0.5);
-        }
-        
-        .cta-secondary {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .cta-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .main-container {
-            max-width: 1200px;
-            margin: -40px auto 40px;
-            padding: 0 5%;
-        }
-        
-        .section {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--dark);
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .feature {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .feature-icon {
-            color: var(--primary);
-            font-size: 2rem;
-            flex-shrink: 0;
-        }
-        
-        .feature-content h3 {
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        .domain-boxes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .domain-box {
-            background: linear-gradient(135deg, #f5f8ff 0%, #e6f0ff 100%);
-            border: 1px solid #e0e7ff;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            transition: var(--transition);
-        }
-        
-        .domain-box:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary);
-        }
-        
-        .domain-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .domain-address {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 15px 0;
-            word-break: break-all;
-        }
-        
-        .access-links {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-        
-        .access-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--light);
-            padding: 15px 20px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .link-main {
-            font-weight: bold;
-        }
-        
-        .how-it-works {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            counter-reset: step;
-        }
-        
-        .step {
-            text-align: center;
-            position: relative;
-        }
-        
-        .step-number {
-            counter-increment: step;
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 20px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .step-number::before {
-            content: counter(step);
-        }
-        
-        .step-content h3 {
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        .security-note {
-            background: linear-gradient(135deg, #fff7e6 0%, #ffefd6 100%);
-            border-left: 4px solid #ffb400;
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin-top: 20px;
-        }
-        
-        .faq {
-            margin-top: 30px;
-        }
-        
-        .faq-item {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-        
-        .faq-item:last-child {
-            border: none;
-        }
-        
-        .faq-question {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .faq-answer {
-            color: var(--gray);
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            nav {
-                width: 100%;
-                text-align: center;
-            }
-            
-            nav a {
-                margin: 0 10px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云临时邮箱 | 96Mail</title>
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fusion-pixel-12px-monospaced-sc@5.3.0/index.css">
+<style>
+:root{
+  --bg:#0d0221;
+  --panel:#1f1235;
+  --ink:#f4f1de;
+  --green:#39ff14;
+  --pink:#ff2d78;
+  --yellow:#ffe94a;
+  --cyan:#00e5ff;
+  --purple:#a06bff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Fusion Pixel 12px Monospaced SC','Press Start 2P',ui-monospace,monospace;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  padding:20px 16px 40px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:24px 24px;
+  overflow-x:hidden;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:40;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 4px);
+  opacity:.35;
+}
+.container{max-width:1040px;margin:0 auto;position:relative;z-index:1}
+
+/* ===== 顶栏 ===== */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--panel);border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  padding:16px 22px;margin:6px 0 26px;
+  flex-wrap:wrap;gap:12px;
+}
+.logo{display:flex;align-items:center;gap:12px;font-size:1.15rem;font-weight:700;color:var(--ink)}
+.logo-icon{
+  width:42px;height:42px;background:var(--pink);border:2px solid #000;
+  box-shadow:3px 3px 0 #000;
+  display:flex;align-items:center;justify-content:center;
+  color:#000;font-family:'Press Start 2P',monospace;font-size:.7rem;
+}
+nav a{
+  color:var(--cyan);text-decoration:none;margin-left:16px;font-size:.9rem;
+  border-bottom:2px solid transparent;padding-bottom:2px;
+}
+nav a:hover{border-bottom-color:var(--cyan)}
+
+/* ===== Hero ===== */
+.hero{text-align:center;padding:30px 10px 34px}
+.hero h1{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:clamp(1.1rem,4.5vw,2rem);
+  color:var(--pink);
+  text-shadow:3px 3px 0 #7a0035,6px 6px 0 rgba(0,0,0,.45);
+  margin-bottom:14px;letter-spacing:1px;
+  animation:titleFlicker 5s infinite;
+}
+@keyframes titleFlicker{
+  0%,100%{opacity:1}
+  91%{opacity:1}92%{opacity:.55}93%{opacity:1}95%{opacity:.7}96%{opacity:1}
+}
+.hero p{font-size:1rem;color:var(--ink);opacity:.85;margin-bottom:22px;line-height:1.8}
+.cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-button{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:46px;padding:12px 22px;
+  background:var(--pink);color:#000;
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.68rem;text-decoration:none;
+  border:2px solid #000;box-shadow:4px 4px 0 #000;
+  transition:transform .1s steps(2),box-shadow .1s steps(2);
+}
+.cta-button:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+.cta-button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #000}
+.cta-secondary{background:var(--panel);color:var(--cyan);border-color:var(--cyan)}
+.hr-pixel{
+  width:min(420px,80%);height:8px;margin:22px auto;
+  background:repeating-linear-gradient(90deg,var(--ink) 0 8px,transparent 8px 16px);
+  opacity:.85;
+}
+
+/* ===== 区块 ===== */
+.section{
+  background:var(--panel);
+  border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  padding:28px;margin-bottom:24px;
+}
+.section-title{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:1rem;color:var(--green);margin-bottom:18px;letter-spacing:.5px;
+  position:relative;padding-bottom:10px;
+}
+.section-title::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:64px;height:4px;background:var(--green);
+}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:8px}
+.feature{display:flex;gap:14px}
+.feature-icon{
+  width:44px;height:44px;flex-shrink:0;
+  background:var(--bg);border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--green);font-family:'Press Start 2P',monospace;font-size:.7rem;
+}
+.feature-content h3{margin-bottom:8px;color:var(--ink);font-size:1rem}
+.feature-content p{font-size:.9rem;opacity:.85;line-height:1.75}
+
+.domain-boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.domain-box{
+  background:var(--bg);border:2px solid #4a3a6e;
+  padding:22px;text-align:center;transition:border-color .12s;
+}
+.domain-box:hover{border-color:var(--pink)}
+.domain-title{font-size:1.05rem;margin-bottom:10px;color:var(--ink)}
+.domain-address{
+  font-size:1.5rem;font-weight:700;color:var(--pink);
+  margin:12px 0;word-break:break-all;
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+}
+.access-links{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}
+.access-link{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--bg);border:2px solid #4a3a6e;border-left:4px solid var(--pink);
+  padding:12px 16px;font-size:.92rem;flex-wrap:wrap;gap:8px;
+}
+.link-url{font-family:ui-monospace,monospace;color:var(--cyan);word-break:break-all}
+
+.how-it-works{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;counter-reset:step}
+.step{text-align:center;position:relative}
+.step-number{
+  counter-increment:step;width:52px;height:52px;margin:0 auto 14px;
+  background:var(--pink);color:#000;border:2px solid #000;box-shadow:3px 3px 0 #000;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Press Start 2P',monospace;font-size:.8rem;position:relative;
+}
+.step-number::before{content:counter(step)}
+.step-content h3{margin-bottom:8px;color:var(--ink);font-size:.98rem}
+.step-content p{font-size:.88rem;opacity:.82;line-height:1.7}
+
+.security-note{
+  background:var(--bg);border:2px solid var(--yellow);
+  border-left:4px solid var(--yellow);
+  padding:16px;margin-top:16px;font-size:.9rem;line-height:1.7;
+}
+.security-note strong{color:var(--yellow)}
+
+.faq{margin-top:10px}
+.faq-item{margin-bottom:16px;border-bottom:2px solid #3a2c5e;padding-bottom:16px}
+.faq-item:last-child{border:none}
+.faq-question{
+  font-weight:600;color:var(--ink);font-size:1rem;margin-bottom:8px;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+}
+.faq-question .arrow{color:var(--cyan);font-family:'Press Start 2P',monospace;font-size:.6rem}
+.faq-answer{color:#c9bce8;font-size:.92rem;line-height:1.75}
+
+@media (max-width:768px){
+  header{flex-direction:column;align-items:flex-start}
+  nav a{margin:0 10px 0 0}
+  .feature{flex-direction:column;text-align:center;align-items:center}
+  .access-link{flex-direction:column;align-items:flex-start}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div>96Mail云邮箱</div>
-            </div>
-            <nav>
-                <a href="#features">功能</a>
-                <a href="#domains">邮箱后缀</a>
-                <a href="#how-to">使用指南</a>
-                <a href="#faq">常见问题</a>
-            </nav>
-        </div>
-    </header>
-    
-    <section class="hero">
-        <div class="hero-content">
-            <h1>安全、临时、隐私保护的云邮箱服务</h1>
-            <p>不限制注册、永久免费、即开即用的临时邮箱解决方案，保护您的隐私免受垃圾邮件侵扰</p>
-            <div class="cta-group">
-                <a href="https://96mail.qzz.io" class="cta-button">使用主邮箱地址</a>
-                <a href="https://mail.sunhaoming.dpdns.org" class="cta-button cta-secondary">使用备用邮箱地址</a>
-            </div>
-        </div>
-    </section>
-    
-    <div class="main-container">
-        <section class="section" id="features">
-            <h2 class="section-title">为什么选择96Mail临时邮箱</h2>
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h3>无限制注册</h3>
-                        <p>打开即用，注册账户极简，无需提供任何个人信息。只需访问我们的网站即可生成临时邮箱地址。</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-infinity"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h3>永久免费</h3>
-                        <p>我们承诺永久免费服务，不收取任何费用，不添加任何广告，为所有人提供平等隐私保护服务。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="section" id="domains">
-            <h2 class="section-title">可用的邮箱后缀</h2>
-            <div class="domain-boxes">
-                <div class="domain-box">
-                    <div class="domain-title">主邮箱后缀</div>
-                    <div class="domain-address">@96mail.qzz.io</div>
-                    <p>这是我们的默认邮箱后缀，提供稳定的临时邮箱服务</p>
-                    <a href="https://96mail.qzz.io" class="cta-button">立即使用</a>
-                </div>
-                <div class="domain-box">
-                    <div class="domain-title">备用邮箱后缀</div>
-                    <div class="domain-address">@sunhaoming.dpdns.org</div>
-                    <p>当主邮箱无法使用时，您可以切换到我们的备用邮箱服务</p>
-                    <a href="https://mail.sunhaoming.dpdns.org" class="cta-button">访问备用站点</a>
-                </div>
-            </div>
-            
-            <div class="access-links">
-                <div class="access-link">
-                    <div class="link-main">主邮箱访问地址：</div>
-                    <div class="link-url">https://96mail.qzz.io</div>
-                </div>
-                <div class="access-link">
-                    <div class="link-main">备用邮箱访问地址：</div>
-                    <div class="link-url">https://mail.sunhaoming.dpdns.org</div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="section" id="how-to">
-            <h2 class="section-title">如何使用临时邮箱服务</h2>
-            <div class="how-it-works">
-                <div class="step">
-                    <div class="step-number"></div>
-                    <div class="step-content">
-                        <h3>访问邮箱地址</h3>
-                        <p>打开浏览器，访问我们的主站点或备用站点地址。</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number"></div>
-                    <div class="step-content">
-                        <h3>生成临时邮箱</h3>
-                        <p>自定义一个临时邮箱地址。</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number"></div>
-                    <div class="step-content">
-                        <h3>接收邮件</h3>
-                        <p>在需要邮箱注册的网站使用该临时邮箱，接收验证邮件等。</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number"></div>
-                    <div class="step-content">
-                        <h3>查看回复</h3>
-                        <p>邮件内容会实时显示在您的临时邮箱页面，您可以在该页面直接回复邮件。</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="security-note">
-                <p><strong>安全提示：</strong> 临时邮箱适用于短期需求。请勿将其用于重要服务（如银行账户）的注册。</p>
-            </div>
-        </section>
-        
-        <section class="section" id="faq">
-            <h2 class="section-title">常见问题解答</h2>
-            <div class="faq">
-                <div class="faq-item">
-                    <div class="faq-question">临时邮箱可以长期使用吗？ <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">
-                        <p>96Mail的临时邮箱持续有效。即使关闭了邮箱页面，或者长时间不活动，会话也不会结束，邮箱内容不会被清除。</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">我可以回复发送的邮件吗？ <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">
-                        <p>可以，您可以直接在邮箱界面回复收到的邮件，但请注意回复功能每天限制5次。</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">临时邮箱接收的附件会被保存吗？ <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">
-                        <p>是的，您可以正常接收和下载邮件附件，但请及时处理。</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">如果主站点无法访问怎么办？ <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">
-                        <p>如果主站点(https://96mail.qzz.io)无法访问，请立即尝试我们的备用地址：https://mail.sunhaoming.dpdns.org</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">@</div>
+      <div>96Mail云邮箱</div>
     </div>
-    
-    <script>
-        // 简单的交互效果：平滑滚动和FAQ展开
-        document.addEventListener('DOMContentLoaded', function() {
-            // 平滑滚动
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    if(this.hash !== "") {
-                        e.preventDefault();
-                        
-                        const target = document.querySelector(this.hash);
-                        if(target) {
-                            window.scrollTo({
-                                top: target.offsetTop - 80,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-            });
-            
-            // FAQ展开
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-                    const icon = this.querySelector('i');
-                    icon.classList.toggle('fa-chevron-down');
-                    icon.classList.toggle('fa-chevron-up');
-                });
-            });
-        });
-    </script>
+    <nav>
+      <a href="#features">功能</a>
+      <a href="#domains">邮箱后缀</a>
+      <a href="#how-to">使用指南</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>安全、临时、隐私保护的云邮箱服务</h1>
+    <p>不限制注册、永久免费、即开即用的临时邮箱解决方案，保护您的隐私免受垃圾邮件侵扰</p>
+    <div class="cta-group">
+      <a href="https://96mail.qzz.io" class="cta-button">使用主邮箱地址</a>
+      <a href="https://mail.sunhaoming.dpdns.org" class="cta-button cta-secondary">使用备用邮箱地址</a>
+    </div>
+  </section>
+
+  <div class="hr-pixel" aria-hidden="true"></div>
+
+  <section class="section" id="features">
+    <h2 class="section-title">为什么选择96Mail临时邮箱</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-content">
+          <h3>无限制注册</h3>
+          <p>打开即用，注册账户极简，无需提供任何个人信息。只需访问我们的网站即可生成临时邮箱地址。</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">∞</div>
+        <div class="feature-content">
+          <h3>永久免费</h3>
+          <p>我们承诺永久免费服务，不收取任何费用，不添加任何广告，为所有人提供平等隐私保护服务。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="domains">
+    <h2 class="section-title">可用的邮箱后缀</h2>
+    <div class="domain-boxes">
+      <div class="domain-box">
+        <div class="domain-title">主邮箱后缀</div>
+        <div class="domain-address">@96mail.qzz.io</div>
+        <p style="font-size:.9rem;opacity:.82">这是我们的默认邮箱后缀，提供稳定的临时邮箱服务</p>
+        <a href="https://96mail.qzz.io" class="cta-button" style="margin-top:14px">立即使用</a>
+      </div>
+      <div class="domain-box">
+        <div class="domain-title">备用邮箱后缀</div>
+        <div class="domain-address">@sunhaoming.dpdns.org</div>
+        <p style="font-size:.9rem;opacity:.82">当主邮箱无法使用时，您可以切换到我们的备用邮箱服务</p>
+        <a href="https://mail.sunhaoming.dpdns.org" class="cta-button cta-secondary" style="margin-top:14px">访问备用站点</a>
+      </div>
+    </div>
+
+    <div class="access-links">
+      <div class="access-link">
+        <div class="link-main">主邮箱访问地址：</div>
+        <div class="link-url">https://96mail.qzz.io</div>
+      </div>
+      <div class="access-link">
+        <div class="link-main">备用邮箱访问地址：</div>
+        <div class="link-url">https://mail.sunhaoming.dpdns.org</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-to">
+    <h2 class="section-title">如何使用临时邮箱服务</h2>
+    <div class="how-it-works">
+      <div class="step">
+        <div class="step-number"></div>
+        <div class="step-content">
+          <h3>访问邮箱地址</h3>
+          <p>打开浏览器，访问我们的主站点或备用站点地址。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number"></div>
+        <div class="step-content">
+          <h3>生成临时邮箱</h3>
+          <p>自定义一个临时邮箱地址。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number"></div>
+        <div class="step-content">
+          <h3>接收邮件</h3>
+          <p>在需要邮箱注册的网站使用该临时邮箱，接收验证邮件等。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number"></div>
+        <div class="step-content">
+          <h3>查看回复</h3>
+          <p>邮件内容会实时显示在您的临时邮箱页面，您可以在该页面直接回复邮件。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="security-note">
+      <p><strong>安全提示：</strong> 临时邮箱适用于短期需求。请勿将其用于重要服务（如银行账户）的注册。</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <h2 class="section-title">常见问题解答</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-question">临时邮箱可以长期使用吗？ <span class="arrow">▼</span></div>
+        <div class="faq-answer">
+          <p>96Mail的临时邮箱持续有效。即使关闭了邮箱页面，或者长时间不活动，会话也不会结束，邮箱内容不会被清除。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">我可以回复发送的邮件吗？ <span class="arrow">▼</span></div>
+        <div class="faq-answer">
+          <p>可以，您可以直接在邮箱界面回复收到的邮件，但请注意回复功能每天限制5次。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">临时邮箱接收的附件会被保存吗？ <span class="arrow">▼</span></div>
+        <div class="faq-answer">
+          <p>是的，您可以正常接收和下载邮件附件，但请及时处理。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">如果主站点无法访问怎么办？ <span class="arrow">▼</span></div>
+        <div class="faq-answer">
+          <p>如果主站点(https://96mail.qzz.io)无法访问，请立即尝试我们的备用地址：https://mail.sunhaoming.dpdns.org</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+// 简单的交互效果：平滑滚动和FAQ展开
+document.addEventListener('DOMContentLoaded', function() {
+  // 平滑滚动
+  document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      if(this.hash !== "") {
+        e.preventDefault();
+
+        const target = document.querySelector(this.hash);
+        if(target) {
+          window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      }
+    });
+  });
+
+  // FAQ展开
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', function() {
+      const answer = this.nextElementSibling;
+      const hidden = answer.style.display === 'none';
+      answer.style.display = hidden ? 'block' : 'none';
+      const arrow = this.querySelector('.arrow');
+      arrow.textContent = hidden ? '▲' : '▼';
+    });
+  });
+});
+</script>
 </body>
 </html>
