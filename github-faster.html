@@ -1,488 +1,414 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub 资源加速服务</title>
-    <style>
-        :root {
-            --primary-color: #2185d0;
-            --background: #f8f9fa;
-            --card-bg: #ffffff;
-            --success-color: #21ba45;
-            --warning-color: #f2711c;
-            --danger-color: #db2828;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 资源加速服务</title>
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fusion-pixel-12px-monospaced-sc@5.3.0/index.css">
+<style>
+:root{
+  --bg:#0d0221;
+  --panel:#1f1235;
+  --ink:#f4f1de;
+  --green:#39ff14;
+  --pink:#ff2d78;
+  --yellow:#ffe94a;
+  --cyan:#00e5ff;
+  --purple:#a06bff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Fusion Pixel 12px Monospaced SC','Press Start 2P',ui-monospace,monospace;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  padding:20px 16px 40px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:24px 24px;
+  overflow-x:hidden;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:40;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 4px);
+  opacity:.35;
+}
+.container{max-width:860px;margin:0 auto;position:relative;z-index:1}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 2rem;
-            background: var(--background);
-            color: #333;
-        }
+/* ===== 标题区 ===== */
+header{text-align:center;padding:34px 0 26px}
+.logo{width:64px;height:64px;margin:0 auto 14px;fill:var(--green);display:block}
+h1{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:clamp(1.1rem,4vw,1.9rem);
+  color:var(--green);
+  text-shadow:3px 3px 0 #0a5c00,6px 6px 0 rgba(0,0,0,.45);
+  margin-bottom:12px;letter-spacing:1px;
+  animation:titleFlicker 5s infinite;
+}
+@keyframes titleFlicker{
+  0%,100%{opacity:1}
+  91%{opacity:1}92%{opacity:.55}93%{opacity:1}95%{opacity:.7}96%{opacity:1}
+}
+.subtitle{font-size:.95rem;color:var(--cyan);opacity:.9;letter-spacing:1px}
+.hr-pixel{
+  width:min(420px,80%);height:8px;margin:18px auto 0;
+  background:repeating-linear-gradient(90deg,var(--ink) 0 8px,transparent 8px 16px);
+  opacity:.85;
+}
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+/* ===== 主卡片 ===== */
+.card{
+  background:var(--panel);
+  border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  padding:24px;
+  margin-bottom:22px;
+}
+.proxy-title{font-weight:700;margin-bottom:12px;color:var(--yellow);font-size:1rem}
+.proxy-list{display:flex;flex-wrap:wrap;gap:12px}
+.proxy-item{
+  flex:1;min-width:180px;
+  padding:12px 14px;background:var(--bg);
+  border:2px solid #4a3a6e;cursor:pointer;
+  transition:all .12s steps(2);position:relative;
+}
+.proxy-item:hover{border-color:var(--cyan)}
+.proxy-item.selected{
+  border-color:var(--green);
+  background:rgba(57,255,20,.08);
+}
+.proxy-name{
+  font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;
+  font-size:.92rem;color:var(--ink);
+}
+.ping-value{
+  font-size:.8rem;padding:3px 8px;font-weight:700;
+  font-family:'Press Start 2P',monospace;
+}
+.ping-good{background:rgba(57,255,20,.15);color:var(--green)}
+.ping-medium{background:rgba(255,233,74,.15);color:var(--yellow)}
+.ping-bad{background:rgba(255,45,120,.15);color:var(--pink)}
+.proxy-url{font-size:.8rem;color:var(--cyan);word-break:break-all}
+.recommended-tag{
+  position:absolute;top:-10px;right:8px;
+  background:var(--green);color:#000;
+  font-size:.65rem;padding:3px 8px;font-weight:700;
+  font-family:'Press Start 2P',monospace;
+}
+.proxy-info{font-size:.85rem;color:#b8a8e0;margin-top:12px;text-align:center}
+.ping-progress{font-size:.85rem;color:var(--yellow);margin-top:8px;text-align:center;min-height:1.4em}
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+/* ===== 输入区 ===== */
+.input-group{display:flex;gap:12px;margin-top:18px}
+.input-group input{
+  flex:1;padding:14px;
+  background:var(--bg);border:2px solid #4a3a6e;color:var(--ink);
+  font-family:'Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:1rem;outline:none;
+}
+.input-group input:focus{border-color:var(--cyan)}
+.input-group input::placeholder{color:#6d5b99}
+.input-group button{
+  min-width:120px;padding:14px 20px;
+  background:var(--green);color:#000;
+  border:2px solid #000;box-shadow:3px 3px 0 #000;
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.7rem;cursor:pointer;
+  transition:transform .1s steps(2),box-shadow .1s steps(2);
+}
+.input-group button:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+.input-group button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #000}
 
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1rem;
-        }
+/* ===== 特性 ===== */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feature-item{
+  background:var(--panel);border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  text-align:center;padding:18px 12px;
+}
+.feature-item h3{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.7rem;color:var(--pink);margin-bottom:10px;letter-spacing:.5px;
+}
+.feature-item p{font-size:.85rem;opacity:.85;line-height:1.7}
 
-        h1 {
-            color: var(--primary-color);
-            margin: 0.5rem 0;
-            font-size: 2.5rem;
-        }
+@media (max-width:640px){
+  .features{grid-template-columns:1fr}
+  .input-group{flex-direction:column}
+  .input-group button{width:100%}
+  .proxy-item{min-width:100%}
+}
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--card-bg);
-            border-radius: 8px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: #666;
-        }
-
-        .proxy-selector {
-            margin-bottom: 1.5rem;
-        }
-        
-        .proxy-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #555;
-        }
-        
-        .proxy-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-        
-        .proxy-item {
-            flex: 1;
-            min-width: 200px;
-            padding: 1rem;
-            background: var(--card-bg);
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        
-        .proxy-item:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(33, 133, 208, 0.2);
-        }
-        
-        .proxy-item.selected {
-            border-color: var(--primary-color);
-            background-color: rgba(33, 133, 208, 0.05);
-        }
-        
-        .proxy-name {
-            font-weight: bold;
-            margin-bottom: 0.3rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .ping-value {
-            font-size: 0.9rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        
-        .ping-good {
-            background-color: rgba(33, 186, 69, 0.1);
-            color: var(--success-color);
-        }
-        
-        .ping-medium {
-            background-color: rgba(242, 113, 28, 0.1);
-            color: var(--warning-color);
-        }
-        
-        .ping-bad {
-            background-color: rgba(219, 40, 40, 0.1);
-            color: var(--danger-color);
-        }
-        
-        .proxy-url {
-            font-size: 0.85rem;
-            color: #666;
-            word-break: break-all;
-        }
-        
-        .recommended-tag {
-            position: absolute;
-            top: -8px;
-            right: 10px;
-            background: var(--success-color);
-            color: white;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        
-        .proxy-info {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 0.5rem;
-            text-align: center;
-        }
-        
-        .ping-progress {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 0.3rem;
-            text-align: center;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem;
-            }
-            
-            .input-group {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-            }
-            
-            .proxy-list {
-                flex-direction: column;
-            }
-        }
-    </style>
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <svg class="logo" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.793-.258.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.815 2.809 1.29 3.495.99.108-.776.417-1.29.76-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-            </svg>
-            <h1>GitHub 加速服务</h1>
-            <p>高速下载GitHub资源的代理服务</p>
-        </div>
+<div class="container">
 
-        <div class="card">
-            <!-- 加速站选择区域 -->
-            <div class="proxy-selector">
-                <div class="proxy-title">选择加速站点：</div>
-                <div class="proxy-list" id="proxyList">
-                    <!-- 加速站选项将通过JS动态生成 -->
-                </div>
-                <div class="proxy-info">点击选择加速站点，绿色标签表示推荐的低延迟节点</div>
-                <div class="ping-progress" id="pingProgress">正在测量节点延迟...</div>
-            </div>
-            
-            <div class="input-group">
-                <input type="text" placeholder="输入GitHub文件URL，例如：https://github.com/user/repo/archive/master.zip" id="urlInput">
-                <button onclick="handleConvert()">立即转换</button>
-            </div>
-        </div>
+  <header>
+    <svg class="logo" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.793-.258.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.815 2.809 1.29 3.495.99.108-.776.417-1.29.76-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+    </svg>
+    <h1>GitHub 加速服务</h1>
+    <p class="subtitle">输入链接 · 选择加速站点 · 一键转换下载</p>
+    <div class="hr-pixel" aria-hidden="true"></div>
+  </header>
 
-        <div class="features">
-            <div class="feature-item">
-                <h3>极速访问</h3>
-                <p>通过全球CDN节点加速资源访问</p>
-            </div>
-            <div class="feature-item">
-                <h3>自动转换</h3>
-                <p>智能识别GitHub资源链接格式</p>
-            </div>
-            <div class="feature-item">
-                <h3>免费服务</h3>
-                <p>完全免费的开源加速解决方案</p>
-            </div>
-        </div>
+  <div class="card">
+    <div class="proxy-title">选择加速站点：</div>
+    <div class="proxy-list" id="proxyList">
+      <!-- 加速站选项将通过JS动态生成 -->
     </div>
+    <div class="proxy-info">点击选择加速站点，绿色标签表示推荐的低延迟节点</div>
+    <div class="ping-progress" id="pingProgress">正在测量节点延迟...</div>
 
-    <script>
-        // 加速站点数据（含自建+社区站点）
-        const proxies = [
-            { id: 'proxy1', name: '自建站点', url: 'github-faster.sunhaoming.dpdns.org', ping: 0 },
-            { id: 'proxy2', name: '社区站点1', url: 'gh.llkk.cc', ping: 0 },
-            { id: 'proxy3', name: '社区站点2', url: 'ghproxy.net', ping: 0 },
-            { id: 'proxy4', name: '社区站点3', url: 'github.tbedu.top', ping: 0 },
-            { id: 'proxy5', name: '社区站点4', url: 'gh.halonice.com', ping: 0 },
-            { id: 'proxy6', name: '社区站点5', url: 'proxy.gitwarp.top', ping: 0},
-            { id: 'proxy7', name: '社区站点6', url: 'githubproxy.cc', ping: 0 },
-            { id: 'proxy8', name: '社区站点7', url: 'ghproxylist.com', ping: 0 },
-            { id: 'proxy9', name: '社区站点8', url: 'ghfast.top', ping: 0 },
-            { id: 'proxy10', name: '社区站点9', url: 'gh-proxy.com', ping: 0 }
-        ];
-        
-        let selectedProxy = proxies[0]; // 默认选择第一个
-        let totalTests = 3; // 每个节点测试次数
-        let currentTest = 0; // 当前测试次数
-        let testInterval; // 测试间隔计时器
+    <div class="input-group">
+      <input type="text" placeholder="输入GitHub文件URL，例如：https://github.com/user/repo/archive/master.zip" id="urlInput">
+      <button onclick="handleConvert()">立即转换</button>
+    </div>
+  </div>
 
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            initProxySelector();
-            startPingTests();
-        });
+  <div class="features">
+    <div class="feature-item">
+      <h3>极速访问</h3>
+      <p>通过全球CDN节点加速资源访问</p>
+    </div>
+    <div class="feature-item">
+      <h3>自动转换</h3>
+      <p>智能识别GitHub资源链接格式</p>
+    </div>
+    <div class="feature-item">
+      <h3>免费服务</h3>
+      <p>完全免费的开源加速解决方案</p>
+    </div>
+  </div>
+</div>
 
-        // 初始化加速站选择器
-        function initProxySelector() {
-            const proxyList = document.getElementById('proxyList');
-            
-            proxies.forEach(proxy => {
-                const proxyItem = document.createElement('div');
-                proxyItem.className = 'proxy-item';
-                if (proxy.recommended) {
-                    proxyItem.classList.add('selected');
-                }
-                proxyItem.dataset.id = proxy.id;
-                
-                // 创建ping值显示元素
-                const pingElement = document.createElement('span');
-                pingElement.className = 'ping-value ping-bad';
-                pingElement.id = `ping-${proxy.id}`;
-                pingElement.textContent = '等待测试...';
-                
-                proxyItem.innerHTML = `
-                    ${proxy.recommended ? '<div class="recommended-tag">推荐</div>' : ''}
-                    <div class="proxy-name">
-                        <span>${proxy.name}</span>
-                    </div>
-                    <div class="proxy-url">${proxy.url}</div>
-                `;
-                
-                // 添加ping元素到proxy-name
-                const proxyName = proxyItem.querySelector('.proxy-name');
-                proxyName.appendChild(pingElement);
-                
-                proxyItem.addEventListener('click', () => {
-                    // 移除所有选中状态
-                    document.querySelectorAll('.proxy-item').forEach(item => {
-                        item.classList.remove('selected');
-                    });
-                    // 添加当前选中状态
-                    proxyItem.classList.add('selected');
-                    // 更新选中的代理
-                    selectedProxy = proxies.find(p => p.id === proxy.id);
-                });
-                
-                proxyList.appendChild(proxyItem);
-            });
-        }
+<script>
+// 加速站点数据（含自建+社区站点）
+const proxies = [
+  { id: 'proxy1', name: '自建站点', url: 'github-faster.sunhaoming.dpdns.org', ping: 0 },
+  { id: 'proxy2', name: '社区站点1', url: 'gh.llkk.cc', ping: 0 },
+  { id: 'proxy3', name: '社区站点2', url: 'ghproxy.net', ping: 0 },
+  { id: 'proxy4', name: '社区站点3', url: 'github.tbedu.top', ping: 0 },
+  { id: 'proxy5', name: '社区站点4', url: 'gh.halonice.com', ping: 0 },
+  { id: 'proxy6', name: '社区站点5', url: 'proxy.gitwarp.top', ping: 0},
+  { id: 'proxy7', name: '社区站点6', url: 'githubproxy.cc', ping: 0 },
+  { id: 'proxy8', name: '社区站点7', url: 'ghproxylist.com', ping: 0 },
+  { id: 'proxy9', name: '社区站点8', url: 'ghfast.top', ping: 0 },
+  { id: 'proxy10', name: '社区站点9', url: 'gh-proxy.com', ping: 0 }
+];
 
-        // 开始ping测试
-        function startPingTests() {
-            currentTest = 0;
-            const progressElement = document.getElementById('pingProgress');
-            
-            // 重置所有节点的ping值
-            proxies.forEach(proxy => {
-                proxy.pingResults = [];
-                const pingElement = document.getElementById(`ping-${proxy.id}`);
-                pingElement.textContent = '等待测试...';
-                pingElement.className = 'ping-value ping-bad';
-            });
-            
-            // 开始测试循环
-            testInterval = setInterval(() => {
-                currentTest++;
-                progressElement.textContent = `正在测量节点延迟...`;
-                
-                // 测量所有代理的ping值
-                proxies.forEach(proxy => {
-                    measurePing(proxy, currentTest);
-                });
-                
-                // 完成所有测试
-                if (currentTest >= totalTests) {
-                    clearInterval(testInterval);
-                    progressElement.textContent = '节点延迟测量完成';
-                    
-                    // 计算并显示平均ping值
-                    proxies.forEach(proxy => {
-                        calculateAveragePing(proxy);
-                    });
-                }
-            }, 3333); // 每3333ms测试一次
-        }
+let selectedProxy = proxies[0]; // 默认选择第一个
+let totalTests = 3; // 每个节点测试次数
+let currentTest = 0; // 当前测试次数
+let testInterval; // 测试间隔计时器
 
-        // 测量单个代理的ping值
-        function measurePing(proxy, testNumber) {
-            const startTime = performance.now();
-            const pingElement = document.getElementById(`ping-${proxy.id}`);
-            
-            // 使用一个小的资源文件来测量延迟
-            const testUrl = `https://${proxy.url}/https://github.com/sunhaoming665/github-faster-ui/releases/download/ui/index.html`;
-            
-            fetch(testUrl, {
-                method: 'HEAD',
-                mode: 'no-cors',
-                cache: 'no-store'
-            })
-            .then(() => {
-                const endTime = performance.now();
-                const pingTime = Math.round(endTime - startTime);
-                
-                // 存储测试结果
-                if (!proxy.pingResults) proxy.pingResults = [];
-                proxy.pingResults.push(pingTime);
-                
-                // 更新UI显示
-                pingElement.textContent = `${pingTime}ms`;
-                
-                // 根据ping值设置颜色
-                pingElement.className = 'ping-value ';
-                if (pingTime < 500) {
-                    pingElement.classList.add('ping-good');
-                } else if (pingTime < 1000) {
-                    pingElement.classList.add('ping-medium');
-                } else {
-                    pingElement.classList.add('ping-bad');
-                }
-            })
-            .catch(() => {
-                // 测量失败处理
-                pingElement.textContent = `超时 (${testNumber}/${totalTests})`;
-                pingElement.className = 'ping-value ping-bad';
-                
-                // 存储测试结果（999表示超时）
-                if (!proxy.pingResults) proxy.pingResults = [];
-                proxy.pingResults.push(999);
-            });
-        }
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+  initProxySelector();
+  startPingTests();
+});
 
-        // 计算平均ping值
-        function calculateAveragePing(proxy) {
-            const pingElement = document.getElementById(`ping-${proxy.id}`);
-            
-            if (!proxy.pingResults || proxy.pingResults.length === 0) {
-                pingElement.textContent = '测试失败';
-                pingElement.className = 'ping-value ping-bad';
-                proxy.ping = 999;
-                return;
-            }
-            
-            // 计算有效结果的平均值（排除超时）
-            const validResults = proxy.pingResults.filter(p => p < 999);
-            if (validResults.length === 0) {
-                pingElement.textContent = '全部超时';
-                pingElement.className = 'ping-value ping-bad';
-                proxy.ping = 999;
-                return;
-            }
-            
-            const sum = validResults.reduce((a, b) => a + b, 0);
-            const avg = Math.round(sum / validResults.length);
-            proxy.ping = avg;
-            
-            // 更新UI显示
-            pingElement.textContent = `${avg}ms`;
-            
-            // 根据平均ping值设置颜色
-            pingElement.className = 'ping-value ';
-            if (avg < 100) {
-                pingElement.classList.add('ping-good');
-            } else if (avg < 200) {
-                pingElement.classList.add('ping-medium');
-            } else {
-                pingElement.classList.add('ping-bad');
-            }
-        }
+// 初始化加速站选择器
+function initProxySelector() {
+  const proxyList = document.getElementById('proxyList');
 
-        // 处理转换
-        function handleConvert() {
-            const input = document.getElementById('urlInput').value.trim();
-            if (!input) {
-                alert('请输入GitHub文件URL');
-                return;
-            }
-            
-            // 验证URL格式
-            if (!isValidGitHubUrl(input)) {
-                alert('请输入有效的GitHub文件URL');
-                return;
-            }
-            
-            // 构建加速URL
-            const acceleratedUrl = `https://${selectedProxy.url}/${input}`;
-            
-            // 在新标签页打开
-            window.open(acceleratedUrl, '_blank');
-        }
-        
-        // 验证GitHub URL
-        function isValidGitHubUrl(url) {
-            // 简单验证是否是GitHub URL
-            return url.startsWith('https://github.com/') || 
-                   url.startsWith('github.com/');
-        }
-    </script>
+  proxies.forEach(proxy => {
+    const proxyItem = document.createElement('div');
+    proxyItem.className = 'proxy-item';
+    if (proxy.recommended) {
+      proxyItem.classList.add('selected');
+    }
+    proxyItem.dataset.id = proxy.id;
+
+    // 创建ping值显示元素
+    const pingElement = document.createElement('span');
+    pingElement.className = 'ping-value ping-bad';
+    pingElement.id = `ping-${proxy.id}`;
+    pingElement.textContent = '等待测试...';
+
+    proxyItem.innerHTML = `
+      ${proxy.recommended ? '<div class="recommended-tag">推荐</div>' : ''}
+      <div class="proxy-name">
+        <span>${proxy.name}</span>
+      </div>
+      <div class="proxy-url">${proxy.url}</div>
+    `;
+
+    // 添加ping元素到proxy-name
+    const proxyName = proxyItem.querySelector('.proxy-name');
+    proxyName.appendChild(pingElement);
+
+    proxyItem.addEventListener('click', () => {
+      // 移除所有选中状态
+      document.querySelectorAll('.proxy-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      // 添加当前选中状态
+      proxyItem.classList.add('selected');
+      // 更新选中的代理
+      selectedProxy = proxies.find(p => p.id === proxy.id);
+    });
+
+    proxyList.appendChild(proxyItem);
+  });
+}
+
+// 开始ping测试
+function startPingTests() {
+  currentTest = 0;
+  const progressElement = document.getElementById('pingProgress');
+
+  // 重置所有节点的ping值
+  proxies.forEach(proxy => {
+    proxy.pingResults = [];
+    const pingElement = document.getElementById(`ping-${proxy.id}`);
+    pingElement.textContent = '等待测试...';
+    pingElement.className = 'ping-value ping-bad';
+  });
+
+  // 开始测试循环
+  testInterval = setInterval(() => {
+    currentTest++;
+    progressElement.textContent = `正在测量节点延迟...`;
+
+    // 测量所有代理的ping值
+    proxies.forEach(proxy => {
+      measurePing(proxy, currentTest);
+    });
+
+    // 完成所有测试
+    if (currentTest >= totalTests) {
+      clearInterval(testInterval);
+      progressElement.textContent = '节点延迟测量完成';
+
+      // 计算并显示平均ping值
+      proxies.forEach(proxy => {
+        calculateAveragePing(proxy);
+      });
+    }
+  }, 3333); // 每3333ms测试一次
+}
+
+// 测量单个代理的ping值
+function measurePing(proxy, testNumber) {
+  const startTime = performance.now();
+  const pingElement = document.getElementById(`ping-${proxy.id}`);
+
+  // 使用一个小的资源文件来测量延迟
+  const testUrl = `https://${proxy.url}/ https://github.com/atom/atom/releases/download/v1.60.0/RELEASES-x64`;
+
+  fetch(testUrl, {
+    method: 'HEAD',
+    mode: 'no-cors',
+    cache: 'no-store'
+  })
+  .then(() => {
+    const endTime = performance.now();
+    const pingTime = Math.round(endTime - startTime);
+
+    // 存储测试结果
+    if (!proxy.pingResults) proxy.pingResults = [];
+    proxy.pingResults.push(pingTime);
+
+    // 更新UI显示
+    pingElement.textContent = `${pingTime}ms`;
+
+    // 根据ping值设置颜色
+    pingElement.className = 'ping-value ';
+    if (pingTime < 500) {
+      pingElement.classList.add('ping-good');
+    } else if (pingTime < 1000) {
+      pingElement.classList.add('ping-medium');
+    } else {
+      pingElement.classList.add('ping-bad');
+    }
+  })
+  .catch(() => {
+    // 测量失败处理
+    pingElement.textContent = `超时 (${testNumber}/${totalTests})`;
+    pingElement.className = 'ping-value ping-bad';
+
+    // 存储测试结果（999表示超时）
+    if (!proxy.pingResults) proxy.pingResults = [];
+    proxy.pingResults.push(999);
+  });
+}
+
+// 计算平均ping值
+function calculateAveragePing(proxy) {
+  const pingElement = document.getElementById(`ping-${proxy.id}`);
+
+  if (!proxy.pingResults || proxy.pingResults.length === 0) {
+    pingElement.textContent = '测试失败';
+    pingElement.className = 'ping-value ping-bad';
+    proxy.ping = 999;
+    return;
+  }
+
+  // 计算有效结果的平均值（排除超时）
+  const validResults = proxy.pingResults.filter(p => p < 999);
+  if (validResults.length === 0) {
+    pingElement.textContent = '全部超时';
+    pingElement.className = 'ping-value ping-bad';
+    proxy.ping = 999;
+    return;
+  }
+
+  const sum = validResults.reduce((a, b) => a + b, 0);
+  const avg = Math.round(sum / validResults.length);
+  proxy.ping = avg;
+
+  // 更新UI显示
+  pingElement.textContent = `${avg}ms`;
+
+  // 根据平均ping值设置颜色
+  pingElement.className = 'ping-value ';
+  if (avg < 100) {
+    pingElement.classList.add('ping-good');
+  } else if (avg < 200) {
+    pingElement.classList.add('ping-medium');
+  } else {
+    pingElement.classList.add('ping-bad');
+  }
+}
+
+// 处理转换
+function handleConvert() {
+  const input = document.getElementById('urlInput').value.trim();
+  if (!input) {
+    alert('请输入GitHub文件URL');
+    return;
+  }
+
+  // 验证URL格式
+  if (!isValidGitHubUrl(input)) {
+    alert('请输入有效的GitHub文件URL');
+    return;
+  }
+
+  // 构建加速URL
+  const acceleratedUrl = `https://${selectedProxy.url}/${input}`;
+
+  // 在新标签页打开
+  window.open(acceleratedUrl, '_blank');
+}
+
+// 验证GitHub URL
+function isValidGitHubUrl(url) {
+  // 简单验证是否是GitHub URL
+  return url.startsWith('https://github.com/') ||
+         url.startsWith('github.com/');
+}
+</script>
 </body>
 </html>
