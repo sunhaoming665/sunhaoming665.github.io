@@ -1,263 +1,582 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工具导航</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #fff;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 0;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
-        
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-        
-        .tool-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .tool-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .tool-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .tool-desc {
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            opacity: 0.8;
-            line-height: 1.5;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: background 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .instructions {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-        }
-        
-        .instructions h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .route-option {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .route-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .route-title::before {
-            content: "•";
-            margin-right: 10px;
-            color: #fdbb2d;
-            font-size: 1.5rem;
-        }
-        
-        .route-url {
-            font-family: monospace;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-top: 8px;
-            word-break: break-all;
-        }
-        
-        .limit-link {
-            text-align: center;
-            margin: 20px 0;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-        
-        .limit-link:hover {
-            opacity: 1;
-        }
-        
-        .limit-link a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 0.9rem;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
-        }
-        
-        .limit-link a:hover {
-            color: white;
-            border-bottom: 1px dashed white;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具导航</title>
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fusion-pixel-12px-monospaced-sc@5.3.0/index.css">
+<style>
+:root{
+  --bg:#0d0221;
+  --panel:#1f1235;
+  --ink:#f4f1de;
+  --green:#39ff14;
+  --pink:#ff2d78;
+  --yellow:#ffe94a;
+  --cyan:#00e5ff;
+  --purple:#a06bff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Fusion Pixel 12px Monospaced SC','Press Start 2P',ui-monospace,monospace;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  padding:20px 16px 40px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:24px 24px;
+  overflow-x:hidden;
+}
+/* 扫描线 */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:40;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 4px);
+  opacity:.35;
+}
+.container{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+
+/* ===== 标题区 ===== */
+header{text-align:center;padding:46px 0 34px}
+h1{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:clamp(1.3rem,5vw,2.7rem);
+  color:var(--yellow);
+  text-shadow:3px 3px 0 #9a6b00,6px 6px 0 rgba(0,0,0,.45);
+  margin-bottom:16px;
+  letter-spacing:2px;
+  animation:titleFlicker 5s infinite;
+}
+@keyframes titleFlicker{
+  0%,100%{opacity:1}
+  91%{opacity:1}92%{opacity:.55}93%{opacity:1}95%{opacity:.7}96%{opacity:1}
+}
+.subtitle{
+  font-size:.95rem;color:var(--cyan);opacity:.9;letter-spacing:1px;
+  margin-bottom:26px;line-height:1.8;
+}
+.hr-pixel{
+  width:min(480px,80%);height:10px;margin:0 auto 0;
+  background:repeating-linear-gradient(90deg,var(--ink) 0 10px,transparent 10px 20px);
+  opacity:.85;
+}
+
+/* ===== 工具卡片 ===== */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin:38px 0 36px;
+}
+.tool-card{
+  background:var(--panel);
+  border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  padding:24px 16px 20px;
+  text-align:center;
+  cursor:pointer;
+  transition:transform .12s steps(2),box-shadow .12s steps(2);
+  user-select:none;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.tool-card:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #000}
+.tool-card:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+.tool-card:nth-child(1){--accent:var(--green)}
+.tool-card:nth-child(2){--accent:var(--pink)}
+.tool-card:nth-child(3){--accent:var(--yellow)}
+.tool-card:nth-child(4){--accent:var(--cyan)}
+.tool-icon{
+  width:52px;height:52px;margin:0 auto 14px;display:block;
+  shape-rendering:crispEdges;image-rendering:pixelated;
+}
+.tool-title{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.78rem;color:var(--accent);margin-bottom:12px;
+  letter-spacing:.5px;line-height:1.7;
+}
+.tool-desc{font-size:.88rem;opacity:.86;line-height:1.75;margin-bottom:18px;flex:1}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;padding:12px 18px 10px;
+  background:var(--accent);color:#000;
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.62rem;letter-spacing:.5px;
+  text-decoration:none;
+  border:2px solid #000;
+  box-shadow:3px 3px 0 #000;
+  transition:transform .1s steps(2),box-shadow .1s steps(2);
+  align-self:center;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #000}
+
+/* ===== 服务状态 ===== */
+.limit-link{text-align:center;margin:26px 0;opacity:.75;transition:opacity .2s}
+.limit-link:hover{opacity:1}
+.limit-link a{
+  color:var(--ink);text-decoration:none;font-size:.9rem;
+  border-bottom:2px dashed rgba(255,255,255,.5);
+  padding-bottom:2px;
+}
+.limit-link a:hover{color:var(--green);border-bottom-color:var(--green)}
+
+/* ===== 线路切换指引 ===== */
+.instructions{
+  background:var(--panel);
+  border:3px solid var(--ink);
+  box-shadow:5px 5px 0 #000;
+  padding:26px 26px 22px;
+  margin-top:14px;
+}
+.instructions h2{
+  font-family:'Press Start 2P','Fusion Pixel 12px Monospaced SC',monospace;
+  font-size:.95rem;text-align:center;margin-bottom:18px;color:var(--purple);
+  letter-spacing:1px;
+}
+.instructions .tip{text-align:center;font-size:.95rem;opacity:.75;margin-bottom:16px}
+.route-option{
+  background:rgba(255,255,255,.05);
+  border:2px solid rgba(255,255,255,.25);
+  padding:14px 16px;margin-bottom:12px;
+}
+.route-title{font-weight:700;margin-bottom:6px;color:var(--ink);font-size:1rem}
+.route-title::before{content:"▸ ";color:var(--green)}
+.route-url{
+  font-family:ui-monospace,monospace;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.2);
+  padding:7px 10px;margin-top:8px;word-break:break-all;
+  font-size:.95rem;color:var(--cyan);
+}
+.hint{margin-top:16px;font-style:italic;opacity:.7;font-size:.95rem;text-align:center}
+
+/* ===== 游戏机按钮 ===== */
+.arcade-btn{
+  position:fixed;right:18px;bottom:18px;z-index:60;
+  width:58px;height:58px;
+  background:var(--pink);border:3px solid #000;box-shadow:4px 4px 0 #000;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .1s steps(2),box-shadow .1s steps(2);
+  font-size:0;
+}
+.arcade-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+.arcade-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+.arcade-btn svg{width:34px;height:34px;shape-rendering:crispEdges}
+.arcade-label{
+  position:fixed;right:18px;bottom:82px;z-index:60;
+  background:#000;color:var(--yellow);border:2px solid var(--yellow);
+  font-size:.62rem;font-family:'Press Start 2P',monospace;
+  padding:6px 8px;letter-spacing:1px;
+  animation:blink 1.2s steps(1) infinite;
+}
+@keyframes blink{50%{opacity:.35}}
+
+/* ===== 游戏弹窗 ===== */
+.game-modal{
+  position:fixed;inset:0;z-index:80;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(5,2,15,.82);
+}
+.game-modal.open{display:flex}
+.game-box{
+  background:var(--bg);border:4px solid var(--ink);
+  box-shadow:8px 8px 0 #000;
+  padding:20px;text-align:center;width:min(94vw,360px);
+}
+.game-head{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
+}
+.game-head h3{
+  font-family:'Press Start 2P',monospace;font-size:.75rem;color:var(--green);
+  letter-spacing:1px;
+}
+.score{font-family:'Press Start 2P',monospace;font-size:.7rem;color:var(--yellow)}
+#gameCanvas{
+  width:min(88vw,300px);height:min(88vw,300px);
+  background:#0a0318;border:3px solid var(--ink);
+  image-rendering:pixelated;
+  touch-action:none;
+}
+.dpad{
+  display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px);
+  gap:6px;justify-content:center;margin-top:14px;
+}
+.dpad button{
+  width:46px;height:46px;background:var(--panel);border:2px solid var(--ink);
+  color:var(--cyan);font-size:1.1rem;cursor:pointer;box-shadow:2px 2px 0 #000;
+  font-family:'Press Start 2P',monospace;
+}
+.dpad button:hover{background:#2a1a4d}
+.dpad [data-dir="up"]{grid-area:1/2}
+.dpad [data-dir="left"]{grid-area:2/1}
+.dpad [data-dir="right"]{grid-area:2/3}
+.dpad [data-dir="down"]{grid-area:3/2}
+.game-ctrl{margin-top:14px;display:flex;gap:10px;justify-content:center}
+.game-ctrl button{
+  background:var(--panel);color:var(--ink);border:2px solid var(--ink);
+  font-family:'Fusion Pixel 12px Monospaced SC',monospace;font-size:.85rem;
+  padding:8px 16px;cursor:pointer;box-shadow:2px 2px 0 #000;
+}
+.game-ctrl button:hover{background:#2a1a4d}
+.game-msg{margin-top:10px;font-size:.9rem;color:var(--pink);min-height:1.4em}
+
+/* ===== 像素粒子 ===== */
+.pixel-dot{
+  position:fixed;z-index:90;width:6px;height:6px;pointer-events:none;
+  animation:dotFall .55s steps(6) forwards;
+}
+@keyframes dotFall{to{transform:translate(var(--dx,0),var(--dy,30px));opacity:0}}
+
+/* ===== 像素光标 ===== */
+.pixel-cursor{
+  position:fixed;z-index:99;width:8px;height:8px;pointer-events:none;
+  background:var(--green);outline:2px solid #000;display:none;
+  transition:transform .08s steps(2);
+}
+@media (hover:hover) and (pointer:fine){.pixel-cursor{display:block}}
+
+@media (max-width:900px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){
+  body{padding:16px 12px 30px}
+  .tools-grid{grid-template-columns:1fr;gap:14px}
+  .tool-desc{min-height:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>实用工具导航</h1>
-            <p class="subtitle">一站式访问各类实用在线工具，提高您的工作效率</p>
-        </header>
-        
-        <div class="tools-grid">
-            <div class="tool-card">
-                <span class="tool-icon">🚀</span>
-                <h3 class="tool-title">GitHub下载加速</h3>
-                <p class="tool-desc">提供GitHub资源的高速下载服务，解决国内访问GitHub速度慢的问题</p>
-                <a href="./github-faster" class="btn">立即使用</a>
-            </div>
-            
-            <div class="tool-card">
-                <span class="tool-icon">📧</span>
-                <h3 class="tool-title">临时邮箱</h3>
-                <p class="tool-desc">生成一次性邮箱地址，保护您的隐私，避免垃圾邮件骚扰</p>
-                <a href="./mail" class="btn">立即使用</a>
-            </div>
-            
-            <div class="tool-card">
-                <span class="tool-icon">⏰</span>
-                <h3 class="tool-title">在线时钟</h3>
-                <p class="tool-desc">显示当前时间，支持多种时区和时间格式</p>
-                <a href="./time" class="btn">立即使用</a>
-            </div>
 
-            <div class="tool-card">
-                <span class="tool-icon">📄</span>
-                <h3 class="tool-title">高中近期试卷</h3>
-                <p class="tool-desc">提供各地区高中最新真题、模拟试卷在线查看与下载</p>
-                <a href="http://oplist.sunhaoming.dpdns.org" class="btn">立即使用</a>
-            </div>
-        </div>
-        
-        <div class="limit-link">
-            <a href="http://stats.sunhaoming.dpdns.org">查看服务状态</a>
-        </div>
-        
-        <div class="instructions">
-            <h2>线路切换指引</h2>
-            <p>如果当前线路访问缓慢，您可以尝试切换到以下备用线路：</p>
-            
-            <div class="route-option">
-                <div class="route-title">GitHub Pages 线路</div>
-                <p>适合国内大部分地区访问，稳定性较高</p>
-                <div class="route-url">sunhaoming665.github.io</div>
-            </div>
-            
-            <div class="route-option">
-                <div class="route-title">EdgeOne 线路</div>
-                <p>全球加速，适合海外用户或需要更高速访问的情况</p>
-                <div class="route-url">www.sunhaoming.dpdns.org</div>
-            </div>
-            
-            <p style="margin-top: 20px; font-style: italic;">提示：如果当前页面加载缓慢，请尝试刷新页面或切换到另一条线路。</p>
-        </div>
+<div class="container">
+  <!-- ===== 视图：标题区 ===== -->
+  <header>
+    <h1>工具导航</h1>
+    <p class="subtitle">┌ 常用在线工具集合 ┐</p>
+    <div class="hr-pixel" aria-hidden="true"></div>
+  </header>
+
+  <!-- ===== 视图：工具卡片 ===== -->
+  <div class="tools-grid" id="toolsGrid">
+
+    <div class="tool-card" data-accent="green">
+      <svg class="tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="4" y="0" width="2" height="2" fill="currentColor"/>
+        <rect x="6" y="2" width="2" height="2" fill="currentColor"/>
+        <rect x="10" y="0" width="2" height="2" fill="currentColor"/>
+        <rect x="8" y="2" width="2" height="2" fill="currentColor"/>
+        <rect x="6" y="4" width="4" height="2" fill="currentColor"/>
+        <rect x="5" y="6" width="6" height="2" fill="currentColor"/>
+        <rect x="4" y="8" width="8" height="2" fill="currentColor"/>
+        <rect x="5" y="10" width="2" height="2" fill="currentColor"/>
+        <rect x="9" y="10" width="2" height="2" fill="currentColor"/>
+        <rect x="4" y="12" width="2" height="2" fill="currentColor"/>
+        <rect x="10" y="12" width="2" height="2" fill="currentColor"/>
+        <rect x="6" y="14" width="4" height="2" fill="currentColor"/>
+      </svg>
+      <h3 class="tool-title">GitHub下载加速</h3>
+      <p class="tool-desc">粘贴GitHub文件链接，选择加速站点，生成加速下载地址</p>
+      <a href="./github-faster" class="btn">立即使用</a>
     </div>
-    
-    <script>
-        // 添加页面加载动画
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.tool-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'opacity 0.5s, transform 0.5s';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
-    </script>
+
+    <div class="tool-card" data-accent="pink">
+      <svg class="tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="1" y="2" width="14" height="12" fill="currentColor"/>
+        <rect x="3" y="4" width="10" height="8" fill="#0d0221"/>
+        <rect x="4" y="6" width="3" height="2" fill="currentColor"/>
+        <rect x="9" y="6" width="3" height="2" fill="currentColor"/>
+        <rect x="6" y="9" width="2" height="2" fill="currentColor"/>
+      </svg>
+      <h3 class="tool-title">临时邮箱</h3>
+      <p class="tool-desc">96Mail云邮箱，地址长期可用，接收验证邮件</p>
+      <a href="./mail" class="btn">立即使用</a>
+    </div>
+
+    <div class="tool-card" data-accent="yellow">
+      <svg class="tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="2" y="2" width="12" height="12" fill="currentColor"/>
+        <rect x="4" y="4" width="8" height="8" fill="#0d0221"/>
+        <rect x="7" y="4" width="2" height="5" fill="currentColor"/>
+        <rect x="7" y="9" width="4" height="2" fill="currentColor"/>
+      </svg>
+      <h3 class="tool-title">在线时钟</h3>
+      <p class="tool-desc">显示当前时间，可设置倒计时提醒</p>
+      <a href="./time" class="btn">立即使用</a>
+    </div>
+
+    <div class="tool-card" data-accent="cyan">
+      <svg class="tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="3" y="1" width="10" height="14" fill="currentColor"/>
+        <rect x="5" y="3" width="6" height="2" fill="#0d0221"/>
+        <rect x="5" y="6" width="6" height="2" fill="#0d0221"/>
+        <rect x="5" y="9" width="6" height="2" fill="#0d0221"/>
+        <rect x="5" y="12" width="4" height="2" fill="#0d0221"/>
+      </svg>
+      <h3 class="tool-title">高中近期试卷</h3>
+      <p class="tool-desc">各地区高中真题与模拟试卷，在线查看和下载</p>
+      <a href="http://oplist.sunhaoming.dpdns.org" class="btn">立即使用</a>
+    </div>
+  </div>
+
+  <!-- ===== 视图：服务状态 ===== -->
+  <div class="limit-link">
+    <a href="http://stats.sunhaoming.dpdns.org">▶ 查看服务状态 ◀</a>
+  </div>
+
+  <!-- ===== 视图：线路切换指引 ===== -->
+  <div class="instructions">
+    <h2>线路切换指引</h2>
+    <p class="tip">如果当前线路访问缓慢，您可以尝试切换到以下备用线路：</p>
+
+    <div class="route-option">
+      <div class="route-title">GitHub Pages 线路</div>
+      <p style="font-size:.95rem;opacity:.8">适合国内大部分地区访问，稳定性较高</p>
+      <div class="route-url">sunhaoming665.github.io</div>
+    </div>
+
+    <div class="route-option">
+      <div class="route-title">EdgeOne 线路</div>
+      <p style="font-size:.95rem;opacity:.8">全球加速，适合海外用户或需要更高速访问的情况</p>
+      <div class="route-url">www.sunhaoming.dpdns.org</div>
+    </div>
+
+    <p class="hint">提示：如果当前页面加载缓慢，请尝试刷新页面或切换到另一条线路。</p>
+  </div>
+</div>
+
+<!-- ===== 视图：游戏机入口 ===== -->
+<div class="arcade-label" aria-hidden="true">GAME</div>
+<button class="arcade-btn" id="arcadeBtn" aria-label="打开贪吃蛇小游戏">
+  <svg viewBox="0 0 16 16" aria-hidden="true">
+    <rect x="1" y="2" width="14" height="12" fill="#ff2d78"/>
+    <rect x="3" y="4" width="3" height="3" fill="#0d0221"/>
+    <rect x="10" y="4" width="3" height="3" fill="#0d0221"/>
+    <rect x="6" y="8" width="4" height="4" fill="#0d0221"/>
+    <rect x="7" y="9" width="2" height="2" fill="#ffe94a"/>
+  </svg>
+</button>
+
+<!-- ===== 视图：贪吃蛇游戏 ===== -->
+<div class="game-modal" id="gameModal" role="dialog" aria-modal="true" aria-label="贪吃蛇小游戏">
+  <div class="game-box">
+    <div class="game-head">
+      <h3>SNAKE</h3>
+      <div class="score">SCORE <span id="scoreVal">0</span></div>
+    </div>
+    <canvas id="gameCanvas" width="300" height="300"></canvas>
+    <div class="game-msg" id="gameMsg">方向键 / 滑动控制 · 按 P 暂停</div>
+    <div class="dpad" id="dpad" aria-hidden="true">
+      <button data-dir="up" aria-label="上">▲</button>
+      <button data-dir="left" aria-label="左">◀</button>
+      <button data-dir="right" aria-label="右">▶</button>
+      <button data-dir="down" aria-label="下">▼</button>
+    </div>
+    <div class="game-ctrl">
+      <button id="restartBtn">重新开始</button>
+      <button id="closeBtn">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 像素光标 -->
+<div class="pixel-cursor" id="pixelCursor" aria-hidden="true"></div>
+
+<script>
+/* ===== 8-bit 音效 ===== */
+let audioCtx=null;
+function beep(freq,dur,type,vol){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type=type||'square';o.frequency.value=freq;
+    g.gain.setValueAtTime(vol||.06,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start();o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+const sfxClick=()=>beep(660,.08,'square',.05);
+const sfxHover=()=>beep(440,.04,'square',.03);
+
+/* ===== 像素粒子爆炸 ===== */
+const dotColors=['#39ff14','#ff2d78','#ffe94a','#00e5ff','#a06bff'];
+function burst(x,y){
+  const n=8;
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div');
+    d.className='pixel-dot';
+    d.style.left=(x-3)+'px';d.style.top=(y-3)+'px';
+    d.style.background=dotColors[i%dotColors.length];
+    const ang=(Math.PI*2*i)/n+Math.random()*.5;
+    const dist=30+Math.random()*30;
+    d.style.setProperty('--dx',Math.cos(ang)*dist+'px');
+    d.style.setProperty('--dy',Math.sin(ang)*dist+'px');
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),600);
+  }
+}
+
+/* ===== 卡片交互 ===== */
+document.querySelectorAll('.tool-card').forEach(card=>{
+  card.addEventListener('mouseenter',()=>{sfxHover()});
+  card.addEventListener('click',e=>{
+    sfxClick();
+    burst(e.clientX,e.clientY);
+  });
+});
+
+/* ===== 像素光标（仅桌面） ===== */
+const pc=document.getElementById('pixelCursor');
+let pcX=0,pcY=0,tX=0,tY=0;
+window.addEventListener('mousemove',e=>{tX=e.clientX;tY=e.clientY;pc.style.display='block'});
+(function loop(){
+  pcX+=(tX-pcX)*.35;pcY+=(tY-pcY)*.35;
+  pc.style.transform=`translate(${pcX-4}px,${pcY-4}px)`;
+  requestAnimationFrame(loop);
+})();
+
+/* ===== 贪吃蛇游戏 ===== */
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('scoreVal');
+const gameMsg=document.getElementById('gameMsg');
+const modal=document.getElementById('gameModal');
+const GRID=15,CELL=canvas.width/GRID;
+let snake,dir,nextDir,food,score,state,timer,lastTick;
+
+function resetGame(){
+  snake=[{x:7,y:7},{x:6,y:7},{x:5,y:7}];
+  dir={x:1,y:0};nextDir={x:1,y:0};
+  score=0;scoreEl.textContent='0';
+  state='ready';gameMsg.textContent='方向键 / 滑动控制 · 按 P 暂停';
+  placeFood();
+  draw();
+}
+function placeFood(){
+  let ok=false;
+  while(!ok){
+    food={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};
+    ok=!snake.some(s=>s.x===food.x&&s.y===food.y);
+  }
+}
+function tick(){
+  if(state!=='run')return;
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(head.x<0||head.y<0||head.x>=GRID||head.y>=GRID||snake.some(s=>s.x===head.x&&s.y===head.y)){
+    state='over';gameMsg.textContent='GAME OVER · 按空格重新开始';
+    beep(220,.2,'sawtooth',.06);
+    draw();return;
+  }
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){
+    score+=10;scoreEl.textContent=score;
+    beep(880,.08,'square',.05);
+    placeFood();
+  }else{
+    snake.pop();
+  }
+  draw();
+}
+function draw(){
+  ctx.fillStyle='#0a0318';ctx.fillRect(0,0,canvas.width,canvas.height);
+  // 网格
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+  for(let i=1;i<GRID;i++){
+    ctx.beginPath();ctx.moveTo(i*CELL,.5);ctx.lineTo(i*CELL,canvas.height);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(.5,i*CELL);ctx.lineTo(canvas.width,i*CELL);ctx.stroke();
+  }
+  // 食物
+  ctx.fillStyle='#ff2d78';
+  ctx.fillRect(food.x*CELL+2,food.y*CELL+2,CELL-4,CELL-4);
+  // 蛇
+  snake.forEach((s,i)=>{
+    ctx.fillStyle=i===0?'#39ff14':'#1f8f0a';
+    ctx.fillRect(s.x*CELL+1,s.y*CELL+1,CELL-2,CELL-2);
+    ctx.strokeStyle='#0d0221';ctx.lineWidth=1;
+    ctx.strokeRect(s.x*CELL+1,s.y*CELL+1,CELL-2,CELL-2);
+  });
+}
+function startRun(){
+  state='run';gameMsg.textContent='';
+  lastTick=performance.now();
+  if(timer)cancelAnimationFrame(timer);
+  const loop=now=>{
+    if(now-lastTick>=120){tick();lastTick=now;}
+    if(state==='run')timer=requestAnimationFrame(loop);
+  };
+  timer=requestAnimationFrame(loop);
+}
+
+/* 键盘控制 */
+document.addEventListener('keydown',e=>{
+  const k=e.key;
+  if(k==='ArrowUp'||k==='w'){e.preventDefault();setDir(0,-1)}
+  else if(k==='ArrowDown'||k==='s'){e.preventDefault();setDir(0,1)}
+  else if(k==='ArrowLeft'||k==='a'){e.preventDefault();setDir(-1,0)}
+  else if(k==='ArrowRight'||k==='d'){e.preventDefault();setDir(1,0)}
+  else if(k==='p'||k==='P'){
+    if(state==='run'){state='pause';gameMsg.textContent='已暂停 · 按 P 继续'}
+    else if(state==='pause'){state='run';gameMsg.textContent='';startRun()}
+  }
+  else if(k===' '||k==='Enter'){
+    if(state==='ready'||state==='over'){resetGame();startRun()}
+  }
+  else if(k==='Escape'){closeGame()}
+});
+function setDir(x,y){
+  if(snake&&snake.length>1&&(snake[1].x-snake[0].x===x&&snake[1].y-snake[0].y===y))return;
+  nextDir={x,y};
+  if(state==='ready'){startRun()}
+}
+
+/* 触屏/按钮控制 */
+const touchStart={x:0,y:0};
+canvas.addEventListener('touchstart',e=>{
+  touchStart.x=e.touches[0].clientX;touchStart.y=e.touches[0].clientY;
+},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchStart.x;
+  const dy=e.changedTouches[0].clientY-touchStart.y;
+  if(Math.abs(dx)<20&&Math.abs(dy)<20)return;
+  if(Math.abs(dx)>Math.abs(dy))setDir(dx>0?1:-1,0);
+  else setDir(0,dy>0?1:-1);
+},{passive:true});
+document.querySelectorAll('.dpad button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const d=b.dataset.dir;
+    if(d==='up')setDir(0,-1);else if(d==='down')setDir(0,1);
+    else if(d==='left')setDir(-1,0);else if(d==='right')setDir(1,0);
+  });
+});
+
+/* 打开/关闭 */
+const arcadeBtn=document.getElementById('arcadeBtn');
+const closeBtn=document.getElementById('closeBtn');
+const restartBtn=document.getElementById('restartBtn');
+arcadeBtn.addEventListener('click',()=>{
+  modal.classList.add('open');
+  beep(700,.06,'square',.05);
+  resetGame();
+  document.body.style.overflow='hidden';
+});
+closeBtn.addEventListener('click',closeGame);
+modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});
+function closeGame(){
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+  if(timer)cancelAnimationFrame(timer);
+  state='closed';
+}
+restartBtn.addEventListener('click',()=>{resetGame();startRun()});
+</script>
 </body>
 </html>
